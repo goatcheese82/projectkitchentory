@@ -23,12 +23,18 @@ class InventoryController < ApplicationController
   end
 
   get "/inventory/:id" do
+    @thing = Thing.find_by_id(params[:id])
+    erb :'/inventory/show'
   end
 
   get "/inventory/:id/edit" do
     if logged_in?
       @thing = Thing.find_by_id(params[:id])
-      erb :'/inventory/edit'
+      if @thing.inventory_id == current_user.inventory.id
+        erb :'/inventory/edit'
+      else
+        redirect "/inventory/user_things"
+      end
     end
   end
 

@@ -17,8 +17,12 @@ class SessionController < ApplicationController
 
   post "/sessions/log_in" do
     @user = User.find_by(:username => params[:username])
-    session[:id] = @user.id
-    redirect "/sessions/home"
+    if @user && @user.authenticate(params[:password])
+      session[:id] = @user.id
+      redirect "/sessions/home"
+    else
+      redirect "/sessions/log_in"
+    end
   end
 
   get "/sessions/home" do
