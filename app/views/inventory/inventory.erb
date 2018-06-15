@@ -1,0 +1,19 @@
+<% @things.each do |thing| %>
+  <div>
+    <h2>Ingredient</h2>
+        <div>
+        <%= thing.id %>
+    </div>
+    <div>
+        <%= thing.title %>
+    </div>
+    <div>
+        <%= thing.description %>
+    </div>
+    <div>
+    <%= thing.quantity %>
+    </div>
+    <a href="/inventory/<%=thing.id %>/edit">Edit</a>
+    <a href="/inventory/<%=thing.id %>/delete">Delete</a>
+  </div>
+<% end %>
