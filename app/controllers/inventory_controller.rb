@@ -22,15 +22,44 @@ class InventoryController < ApplicationController
     end
   end
 
-  get "/inventory/:id/edit" do
+  get "/inventory/:id" do
   end
 
-  get "/inventory/:id/delete/" do
+  get "/inventory/:id/edit" do
+    if logged_in?
+      @thing = Thing.find_by_id(params[:id])
+      erb :'/inventory/edit'
+    end
+  end
+
+  post "/inventory/:id/edit" do
+    if logged_in?
+      if params[:title].empty? || params[:quantity].empty? || params[:description].empty?
+        redirect "/inventory/#{params[:id]}/edit"
+      else
+        @thing = Thing.find_by_id(params[:id])
+        if @thing && @thing.inventory_id == current_user.inventory.id
+          if @thing.update(title: params[:title], description: params[:description], quantity: params[:quantity])
+            redirect "/inventory/user_things"
+          else
+            redirect "/inventory/#{@thing.id}/edit"
+          end
+        else
+          redirect "/sessions/home"
+        end
+      end
+    else
+      redirect "/sessions/log_in"
+    end
+  end
+
+  delete "/inventory/:id/delete" do
     if logged_in?
       @thing = Thing.find_by_id(params[:id])
       if @thing && @thing.inventory_id == current_user.inventory.id
         @thing.delete
       end
+      redirect "/sessions/home"
     else
       redirect "/login"
     end
