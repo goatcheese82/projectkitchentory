@@ -33,6 +33,7 @@ class InventoryController < ApplicationController
       if @thing.inventory_id == current_user.inventory.id
         erb :'/inventory/edit'
       else
+        flash[:message] = "You do not have access to edit that item."
         redirect "/inventory/user_things"
       end
     end
@@ -46,6 +47,7 @@ class InventoryController < ApplicationController
         @thing = Thing.find_by_id(params[:id])
         if @thing && @thing.inventory_id == current_user.inventory.id
           if @thing.update(title: params[:title], description: params[:description], quantity: params[:quantity])
+            flash[:message] = "Item Updated"
             redirect "/inventory/user_things"
           else
             redirect "/inventory/#{@thing.id}/edit"
@@ -64,8 +66,10 @@ class InventoryController < ApplicationController
       @thing = Thing.find_by_id(params[:id])
       if @thing && @thing.inventory_id == current_user.inventory.id
         @thing.delete
+        flash[:message] = "Item Deleted"
       end
-      redirect "/sessions/home"
+
+      redirect "/inventory/user_things"
     else
       redirect "/login"
     end

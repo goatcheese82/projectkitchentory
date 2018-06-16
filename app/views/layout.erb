@@ -2,18 +2,21 @@
 <html>
     <head>
         <title>KitchenTory</title>
-        <link rel="stylesheet" href="/css/style.css">
     </head>
     <body>
+
+            <% if flash[:message] %>
+  <%= flash[:message] %>
+<% end %>
             <% if logged_in? %>
-            <p>Welcome, <%=current_user.first_name %></p>
+            <p>Hello <%=current_user.first_name %></p>
             <a href='/sessions/logout'>Log Out</a>
             <a href='/sessions/home'>Home</a>
           <% else %>
+            <a href="/sessions/log_in"> Log In </a>
             <a href="/sessions/sign_up">Sign Up</a>
-            <a href="/sessions/log_in"> Sign In </a>
           <%end %>
-        <%= yield %>
 
+        <%= yield %>
     </body>
 </html>
