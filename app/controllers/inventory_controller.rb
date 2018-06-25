@@ -80,4 +80,10 @@ class InventoryController < ApplicationController
       @things = current_user.inventory.things.all
     end
   end
+
+  #a bit of cleanup
+
+  get "/inventory" do
+    redirect "/inventory/user_things"
+  end
 end
