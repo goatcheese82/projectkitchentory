@@ -1,12 +1,4 @@
 class SessionController < ApplicationController
-  get "/sessions/sign_up" do
-    if !logged_in?
-      erb :'sessions/sign_up'
-    else
-      redirect "/sessions/home"
-    end
-  end
-
   get "/sessions/log_in" do
     if logged_in?
       redirect "/sessions/home"

@@ -1,8 +1,8 @@
 class InventoryController < ApplicationController
   post "/inventory/add" do
-    @thing = Thing.new(title: params[:title], description: params[:description], quantity: params[:quantity], inventory_id: current_user.id)
+    @thing = Thing.new(title: params[:title], description: params[:description], quantity: params[:quantity], inventory_id: current_user.inventory.id)
     @thing.save
-    redirect "/sessions/home"
+    redirect "/inventory/user_things"
   end
 
   get "/inventory/add" do
@@ -39,7 +39,9 @@ class InventoryController < ApplicationController
     end
   end
 
-  post "/inventory/:id/edit" do
+  #should be patch
+
+  patch "/inventory/:id" do
     if logged_in?
       if params[:title].empty? || params[:quantity].empty? || params[:description].empty?
         redirect "/inventory/#{params[:id]}/edit"
